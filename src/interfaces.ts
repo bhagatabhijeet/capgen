@@ -14,6 +14,9 @@ export interface CapJsonObject {
   status?: any | null;
   msgType?: any | null;
   scope?: any | null;
+  source?: any | null;
+  addresses?: any | null;
+  code?: any|any[]| null;
 }
 
 export type ErrorObject ={reason:string}

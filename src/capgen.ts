@@ -27,7 +27,7 @@ export class Capgen {
     }).ele('urn:oasis:names:tc:emergency:cap:1.2', 'alert');
     const rootNode = xml.root();
 
-    // *** NODES ****
+    // *** Mandatory NODES ****
     // identifier, sender, sent, status,msgType,scope,
     const mandatoryNodesSet1 = [
       'identifier',
@@ -51,9 +51,9 @@ export class Capgen {
       }
     }
 
-    // *** NODES ****
-    // source,restriction
-    const optionalSet1 = ['source', 'restriction'];
+    // *** Optional /Conditional NODES ****
+    // source,restriction,addresses
+    const optionalSet1 = ['source', 'restriction','addresses'];
 
     for (const capOptElem of optionalSet1) {
       const optionalNode1 = this.capOptionalElement(capOptElem);
@@ -61,6 +61,33 @@ export class Capgen {
         rootNode.ele(optionalNode1);
       }
     }
+
+    // *** Optional /Conditional NODES ****
+    // code *** THERE CAN BE MULTIPLE CODE node
+    if (
+      this.capJsonObject.hasOwnProperty("code") &&
+      this.capJsonObject["code"] !== null
+    ) {
+      if(Array.isArray(this.capJsonObject["code"])){
+        for(const code of this.capJsonObject["code"]){
+          rootNode.ele("code").txt(code);
+        }
+      }
+      else
+      {
+        rootNode.ele("code").txt(this.capJsonObject["code"]);
+      }
+    }
+    
+    const optionalSet2 = ['source', 'restriction','addresses'];
+
+    for (const capOptElem of optionalSet1) {
+      const optionalNode1 = this.capOptionalElement(capOptElem);
+      if (optionalNode1 !== '') {
+        rootNode.ele(optionalNode1);
+      }
+    }
+
 
     return xml.end(this.config.xmlOptions);
   }
@@ -98,18 +125,7 @@ export class Capgen {
   private capOptionalElement(capElementName: string): string {
     let node;
     let returnNode;
-    // // when strict mode is true
-    // if (this.config.strictMode) {
-    //   if (
-    //     !this.capJsonObject.hasOwnProperty(capElementName) ||
-    //     this.capJsonObject[capElementName] === null
-    //   ) {
-    //     const err: ErrorObject = {
-    //       reason: `'${capElementName}' is not provided or has value null`,
-    //     };
-    //     return err;
-    //   }
-    // }
+   
     returnNode = create();
     if (
       this.capJsonObject.hasOwnProperty(capElementName) &&

@@ -14,6 +14,7 @@ const gen = new Capgen(configuration);
 const capXml = gen.createUsing({
   identifier: 123,
   sender: 'Abhijeet',
-  // source:"FeedJar"
+  source:"FeedJar",
+  code:["2.1","2.2"]
 });
 console.log(capXml);
