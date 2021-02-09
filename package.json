@@ -1,0 +1,39 @@
+{
+  "name": "capgen",
+  "version": "1.0.0",
+  "description": "A package to generate Common Alerting Protocol XML Payload",
+  "main": "./lib/capgen",  
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bhagatabhijeet/capgen.git"
+  },
+  "keywords": [
+    "CAP",
+    "Common",
+    "Alerting",
+    "Protocol",
+    "XML",
+    "Generator",
+    "CAP1.2"
+  ],
+  "author": "Abhijeet Bhagat",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bhagatabhijeet/capgen/issues"
+  },
+  "homepage": "https://github.com/bhagatabhijeet/capgen#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.14.2",
+    "@typescript-eslint/parser": "^4.14.2",
+    "eslint": "^7.19.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.22.1"
+  },
+  "dependencies": {
+    "xmlbuilder2": "^2.4.0"
+  }
+}

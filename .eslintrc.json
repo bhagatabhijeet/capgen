@@ -1,0 +1,25 @@
+{
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es2021": true
+  },
+  "extends": ["airbnb-base"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 12
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+          "extensions": [".js", ".jsx", ".ts", ".tsx"],
+          "moduleDirectory": ["node_modules", "src/"]
+  },
+  "rules": {
+    "linebreak-style": "off",
+    "class-methods-use-this": "off",
+    "no-console":"off",
+    "prefer-default-export":"off"
+  },
+  "ignorePatterns": "*.d.ts"
+}
