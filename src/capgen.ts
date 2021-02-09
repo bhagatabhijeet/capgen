@@ -1,13 +1,13 @@
 import { builder, create, fragment } from 'xmlbuilder2';
 import { XMLBuilder, XMLWriterOptions } from 'xmlbuilder2/lib/interfaces';
-import { ErrorObject, CapJsonObject, Configuration } from './interfaces';
+import { ErrorObject, CapAlertNodeObject, Configuration } from './interfaces';
 
 export class Capgen {
   err: ErrorObject = { reason: '' };
 
   config: Configuration;
 
-  private capJsonObject: CapJsonObject;
+  private capJsonObject: CapAlertNodeObject;
 
   constructor(config: Configuration) {
     this.config = config;
@@ -18,7 +18,7 @@ export class Capgen {
    * @description createUsing method is the main method that generates the CAP1.2 XML
    * @param capJsonObject CapJsonObject
    */
-  createUsing(capJsonObject: CapJsonObject): string | ErrorObject {
+  createUsing(capJsonObject: CapAlertNodeObject): string | ErrorObject {
     this.capJsonObject = capJsonObject;
     const xml = create({
       version: '1.0',
@@ -26,7 +26,7 @@ export class Capgen {
       encoding: 'UTF-8',
     }).ele('urn:oasis:names:tc:emergency:cap:1.2', 'alert');
     const rootNode = xml.root();
-
+    //#region AlertNode
     // *** Mandatory NODES ****
     // identifier, sender, sent, status,msgType,scope,
     const mandatoryNodesSet1 = [
@@ -53,7 +53,7 @@ export class Capgen {
 
     // *** Optional /Conditional NODES ****
     // source,restriction,addresses
-    const optionalSet1 = ['source', 'restriction','addresses'];
+    const optionalSet1 = ['source', 'restriction', 'addresses'];
 
     for (const capOptElem of optionalSet1) {
       const optionalNode1 = this.capOptionalElement(capOptElem);
@@ -65,21 +65,21 @@ export class Capgen {
     // *** Optional /Conditional NODES ****
     // code *** THERE CAN BE MULTIPLE CODE node
     if (
-      this.capJsonObject.hasOwnProperty("code") &&
-      this.capJsonObject["code"] !== null
+      this.capJsonObject.hasOwnProperty('code') &&
+      this.capJsonObject['code'] !== null
     ) {
-      if(Array.isArray(this.capJsonObject["code"])){
-        for(const code of this.capJsonObject["code"]){
-          rootNode.ele("code").txt(code);
+      if (Array.isArray(this.capJsonObject['code'])) {
+        for (const code of this.capJsonObject['code']) {
+          rootNode.ele('code').txt(code);
         }
-      }
-      else
-      {
-        rootNode.ele("code").txt(this.capJsonObject["code"]);
+      } else {
+        rootNode.ele('code').txt(this.capJsonObject['code']);
       }
     }
-    
-    const optionalSet2 = ['source', 'restriction','addresses'];
+
+    // *** Optional /Conditional NODES ****
+    // note,references,incidents
+    const optionalSet2 = ['note', 'references', 'incidents'];
 
     for (const capOptElem of optionalSet1) {
       const optionalNode1 = this.capOptionalElement(capOptElem);
@@ -87,7 +87,145 @@ export class Capgen {
         rootNode.ele(optionalNode1);
       }
     }
+    //#endregion
 
+    //#region AlertInfo Node
+    let AlertInfoNode;
+    if (
+      this.capJsonObject.hasOwnProperty('info') &&
+      this.capJsonObject['info'] !== null
+    ) {
+      if (Array.isArray(this.capJsonObject.info)) {
+        for (const info of this.capJsonObject.info) {
+          AlertInfoNode = rootNode.ele('info');
+
+          // Language is defaulted to en-US
+          if (info.hasOwnProperty('language') && info['language'] !== null) {
+            AlertInfoNode.ele('language').txt(info.language);
+          } else {
+            AlertInfoNode.ele('language').txt('en-US');
+          }
+
+          // category
+          if (info.category && info.category.length !== 0) {
+            for (const cat of info.category) {
+              AlertInfoNode.ele('category').txt(cat);
+            }
+          } else {
+            if (this.config.strictMode) {
+              const err: ErrorObject = {
+                reason: 'info.category is not provided.',
+              };
+              return err;
+            } else {
+              if (this.config.comment) {
+                AlertInfoNode.com(`Invalid CAP xml.Reason : 'info.category' is not provided or is null,
+                XML is still generated as 'strictMode' configuration is false`);
+              }
+            }
+          }
+
+          // event
+          const eventNode = this.capElement('event');
+          if (typeof eventNode === 'object') {
+            return eventNode;
+          } else {
+            if (!eventNode.startsWith('<!--')) {
+              rootNode.ele(eventNode);
+            } else if (this.config.comment) {
+              rootNode.ele(eventNode);
+            }
+          }
+
+          // responseType
+          if (info.responseType && info.responseType.length !== 0) {
+            for (const resp of info.responseType) {
+              AlertInfoNode.ele('category').txt(resp);
+            }
+          } else {
+            if (this.config.strictMode) {
+              const err: ErrorObject = {
+                reason: 'info.responseType is not provided.',
+              };
+              return err;
+            } else {
+              if (this.config.comment) {
+                AlertInfoNode.com(`Invalid CAP xml.Reason : 'info.responseType' is not provided or is null,
+              XML is still generated as 'strictMode' configuration is false`);
+              }
+            }
+          }
+
+          // *** Mandatory NODES ****
+          // urgency, severity, certainty
+          const infoMandatoryNodesSet1 = ['urgency', 'severity', 'certainty'];
+
+          for (const capElem of infoMandatoryNodesSet1) {
+            const idNode = this.capElement(capElem);
+            if (typeof idNode === 'object') {
+              return idNode;
+            } else {
+              if (!idNode.startsWith('<!--')) {
+                AlertInfoNode.ele(idNode);
+              } else if (this.config.comment) {
+                AlertInfoNode.ele(idNode);
+              }
+            }
+          }
+
+          // *** Optional /Conditional NODES ****
+          // 
+          const infoOptionalSet1 = [
+            'audience',
+            'eventCode',
+            'effective',
+            'onset',
+            'expires',
+            'senderName',
+            'headline',
+            'description',
+            'instruction',
+            'web',
+            'contact'
+          ];
+
+          for (const capOptElem of infoOptionalSet1) {
+            const optionalNode1 = this.capOptionalElement(capOptElem);
+            if (optionalNode1 !== '') {
+              rootNode.ele(optionalNode1);
+            }
+          }
+
+          // parameter
+          let paramNode;
+          if (info.parameter && info.parameter.length !== 0) {
+            for (const par of info.parameter) {
+              const paramNode = AlertInfoNode.ele("parameter");
+              paramNode.ele("valueName").txt(par.valueName);
+              paramNode.ele("value").txt(par.value);             
+              
+            }
+            
+          } else {
+            if (this.config.strictMode) {
+              const err: ErrorObject = {
+                reason: 'info.parameter is not provided.',
+              };
+              return err;
+            } else {
+              if (this.config.comment) {
+                AlertInfoNode.com(`Invalid CAP xml.Reason : 'info.parameter' is not provided or is null,
+                XML is still generated as 'strictMode' configuration is false`);
+              }
+            }
+          }
+
+
+
+        }
+      }
+    }
+    //#endregion
 
     return xml.end(this.config.xmlOptions);
   }
@@ -125,7 +263,7 @@ export class Capgen {
   private capOptionalElement(capElementName: string): string {
     let node;
     let returnNode;
-   
+
     returnNode = create();
     if (
       this.capJsonObject.hasOwnProperty(capElementName) &&
