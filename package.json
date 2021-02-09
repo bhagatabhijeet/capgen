@@ -5,7 +5,8 @@
   "main": "./lib/capgen",  
   "scripts": {
     "test": "npm test",
-    "build":"tsc"
+    "build":"tsc",
+    "prepare" : "npm run build"
   },
   "repository": {
     "type": "git",
