@@ -11,6 +11,16 @@ export interface ParameterNode {
   value?: any | null;
 }
 
+export interface ResourceNode {
+  [key: string]: any;
+  resourceDesc?: any | null;
+  mimeType?: any | null;
+  size?: any | null;
+  uri?: any | null;
+  derefUri?: any | null;
+  digest?: any | null;
+}
+
 export interface CapAlertInfoNodeObject {
   [key: string]: any;
   language?: any | null;
@@ -32,6 +42,7 @@ export interface CapAlertInfoNodeObject {
   web?: any | null;
   contact?: any | null;
   parameter?: ParameterNode[];
+  resource?: ResourceNode[];
 }
 
 export interface CapAlertNodeObject {

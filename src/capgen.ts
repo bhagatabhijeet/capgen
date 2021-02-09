@@ -39,7 +39,7 @@ export class Capgen {
     ];
 
     for (const capElem of mandatoryNodesSet1) {
-      const idNode = this.capElement(capElem);
+      const idNode = this.capElement(capElem,this.capJsonObject);
       if (typeof idNode === 'object') {
         return idNode;
       } else {
@@ -56,7 +56,7 @@ export class Capgen {
     const optionalSet1 = ['source', 'restriction', 'addresses'];
 
     for (const capOptElem of optionalSet1) {
-      const optionalNode1 = this.capOptionalElement(capOptElem);
+      const optionalNode1 = this.capOptionalElement(capOptElem,this.capJsonObject);
       if (optionalNode1 !== '') {
         rootNode.ele(optionalNode1);
       }
@@ -82,7 +82,7 @@ export class Capgen {
     const optionalSet2 = ['note', 'references', 'incidents'];
 
     for (const capOptElem of optionalSet1) {
-      const optionalNode1 = this.capOptionalElement(capOptElem);
+      const optionalNode1 = this.capOptionalElement(capOptElem,this.capJsonObject);
       if (optionalNode1 !== '') {
         rootNode.ele(optionalNode1);
       }
@@ -126,7 +126,7 @@ export class Capgen {
           }
 
           // event
-          const eventNode = this.capElement('event');
+          const eventNode = this.capElement('event',this.capJsonObject);
           if (typeof eventNode === 'object') {
             return eventNode;
           } else {
@@ -161,7 +161,7 @@ export class Capgen {
           const infoMandatoryNodesSet1 = ['urgency', 'severity', 'certainty'];
 
           for (const capElem of infoMandatoryNodesSet1) {
-            const idNode = this.capElement(capElem);
+            const idNode = this.capElement(capElem,info);
             if (typeof idNode === 'object') {
               return idNode;
             } else {
@@ -174,7 +174,7 @@ export class Capgen {
           }
 
           // *** Optional /Conditional NODES ****
-          // 
+          //
           const infoOptionalSet1 = [
             'audience',
             'eventCode',
@@ -186,13 +186,13 @@ export class Capgen {
             'description',
             'instruction',
             'web',
-            'contact'
+            'contact',
           ];
 
           for (const capOptElem of infoOptionalSet1) {
-            const optionalNode1 = this.capOptionalElement(capOptElem);
+            const optionalNode1 = this.capOptionalElement(capOptElem,info);
             if (optionalNode1 !== '') {
-              rootNode.ele(optionalNode1);
+              AlertInfoNode.ele(optionalNode1);
             }
           }
 
@@ -200,12 +200,10 @@ export class Capgen {
           let paramNode;
           if (info.parameter && info.parameter.length !== 0) {
             for (const par of info.parameter) {
-              const paramNode = AlertInfoNode.ele("parameter");
-              paramNode.ele("valueName").txt(par.valueName);
-              paramNode.ele("value").txt(par.value);             
-              
+              const paramNode = AlertInfoNode.ele('parameter');
+              paramNode.ele('valueName').txt(par.valueName);
+              paramNode.ele('value').txt(par.value);
             }
-            
           } else {
             if (this.config.strictMode) {
               const err: ErrorObject = {
@@ -220,8 +218,54 @@ export class Capgen {
             }
           }
 
+          //#region AlertInfoResource Node
+          let infoResourceNode;
+          if (
+            info.hasOwnProperty('resource')  &&
+            info['resource']!== null
+          ) {
+            if (Array.isArray(info.resource)) {
+              for (const res of info.resource) {
+                infoResourceNode = AlertInfoNode.ele('resource');
+                
+                // *** Mandatory Nodes 
+                const resourceMandatoryNodesSet1 = [
+                  'resourceDesc',
+                  'mimeType',                  
+                ];
+            
+                for (const capElem of resourceMandatoryNodesSet1) {
+                  const idNode = this.capElement(capElem,res);
+                  if (typeof idNode === 'object') {
+                    return idNode;
+                  } else {
+                    if (!idNode.startsWith('<!--')) {
+                      infoResourceNode.ele(idNode);
+                    } else if (this.config.comment) {
+                      infoResourceNode.ele(idNode);
+                    }
+                  }
+                }
+                
+                // *** Optional Nodes
+                const resourceOptionslNodesSet1 = [
+                  'size',
+                  'uri', 
+                  'derefUri',
+                  'digest'                 
+                ];
+            
+                for (const capOptElem of resourceOptionslNodesSet1) {
+                  const optionalNode1 = this.capOptionalElement(capOptElem,res);
+                  if (optionalNode1 !== '') {
+                    infoResourceNode.ele(optionalNode1);
+                  }
+                }
 
-
+              }
+            }
+          }
+          //#endregion
         }
       }
     }
@@ -230,14 +274,16 @@ export class Capgen {
     return xml.end(this.config.xmlOptions);
   }
 
-  private capElement(capElementName: string): ErrorObject | string {
+  private capElement(capElementName: string,enclosingJSONObject:any): ErrorObject | string {
     let node;
     let returnNode;
     // when strict mode is true
     if (this.config.strictMode) {
       if (
-        !this.capJsonObject.hasOwnProperty(capElementName) ||
-        this.capJsonObject[capElementName] === null
+        // !this.capJsonObject.hasOwnProperty(capElementName) ||
+        // this.capJsonObject[capElementName] === null
+        !enclosingJSONObject.hasOwnProperty(capElementName) ||
+        enclosingJSONObject[capElementName] === null
       ) {
         const err: ErrorObject = {
           reason: `'${capElementName}' is not provided or has value null`,
@@ -247,10 +293,13 @@ export class Capgen {
     }
     returnNode = create();
     if (
-      this.capJsonObject.hasOwnProperty(capElementName) &&
-      this.capJsonObject[capElementName] !== null
+      // this.capJsonObject.hasOwnProperty(capElementName) &&
+      // this.capJsonObject[capElementName] !== null
+      enclosingJSONObject.hasOwnProperty(capElementName) ||
+        enclosingJSONObject[capElementName] === null
     ) {
-      returnNode.ele(capElementName).txt(this.capJsonObject[capElementName]);
+      // returnNode.ele(capElementName).txt(this.capJsonObject[capElementName]);
+      returnNode.ele(capElementName).txt(enclosingJSONObject[capElementName]);
     } else {
       returnNode.com(
         `Invalid CAP xml.Reason : '${capElementName}' is not provided or is null,
@@ -260,16 +309,18 @@ export class Capgen {
     return returnNode.first().toString();
   }
 
-  private capOptionalElement(capElementName: string): string {
+  private capOptionalElement(capElementName: string,enclosingJSONObject:any): string {
     let node;
     let returnNode;
 
     returnNode = create();
     if (
-      this.capJsonObject.hasOwnProperty(capElementName) &&
-      this.capJsonObject[capElementName] !== null
+      // this.capJsonObject.hasOwnProperty(capElementName) &&
+      // this.capJsonObject[capElementName] !== null
+      enclosingJSONObject.hasOwnProperty(capElementName) &&
+      enclosingJSONObject[capElementName] !== null
     ) {
-      returnNode.ele(capElementName).txt(this.capJsonObject[capElementName]);
+      returnNode.ele(capElementName).txt(enclosingJSONObject[capElementName]);
       return returnNode.first().toString();
     } else {
       return '';

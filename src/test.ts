@@ -33,6 +33,16 @@ const capXml = gen.createUsing({
           value: 'OK',
         },
       ],
+      resource:[{
+        resourceDesc:"IWS",
+        mimeType:"html"
+      },
+      {
+        resourceDesc:"IWS",
+        mimeType:"image" ,
+        digest:'SHA1'
+      }
+    ]
     },
   ],
 });
