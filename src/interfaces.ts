@@ -21,6 +21,16 @@ export interface ResourceNode {
   digest?: any | null;
 }
 
+export interface AreaNode {
+  [key: string]: any;
+  areaDesc?: any | null;
+  polygon?: any[] | null;
+  circle?: any[] | null;
+  geocode?: ParameterNode[] ;
+  altitude?: any | null;
+  ceiling?: any | null;
+}
+
 export interface CapAlertInfoNodeObject {
   [key: string]: any;
   language?: any | null;
@@ -31,7 +41,7 @@ export interface CapAlertInfoNodeObject {
   severity?: any | null;
   certainty?: any | null;
   audience?: any | null;
-  eventCode?: any | null;
+  eventCode?: any[] | null;
   effective?: any | null;
   onset?: any | null;
   expires?: any | null;
@@ -43,6 +53,7 @@ export interface CapAlertInfoNodeObject {
   contact?: any | null;
   parameter?: ParameterNode[];
   resource?: ResourceNode[];
+  area?:AreaNode[];
 }
 
 export interface CapAlertNodeObject {

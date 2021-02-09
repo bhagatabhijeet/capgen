@@ -23,6 +23,7 @@ const capXml = gen.createUsing({
   info: [
     {
       category: ["A","B"],
+      eventCode:["e1","e2"],
       parameter: [
         {
           valueName: 'same',
@@ -41,6 +42,25 @@ const capXml = gen.createUsing({
         resourceDesc:"IWS",
         mimeType:"image" ,
         digest:'SHA1'
+      }
+    ],
+    area:[
+      {
+        areaDesc:"Taylor; Clark",
+        geocode:[
+          {
+            valueName:"UGC",
+            value:"WIZ017"
+          },
+          {
+            valueName:"UGC",
+            value:"WIZ017"
+          },
+          {
+            valueName:"UGC",
+            value:"WIZ017"
+          }
+        ]
       }
     ]
     },

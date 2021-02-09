@@ -39,7 +39,7 @@ export class Capgen {
     ];
 
     for (const capElem of mandatoryNodesSet1) {
-      const idNode = this.capElement(capElem,this.capJsonObject);
+      const idNode = this.capElement(capElem, this.capJsonObject);
       if (typeof idNode === 'object') {
         return idNode;
       } else {
@@ -56,7 +56,10 @@ export class Capgen {
     const optionalSet1 = ['source', 'restriction', 'addresses'];
 
     for (const capOptElem of optionalSet1) {
-      const optionalNode1 = this.capOptionalElement(capOptElem,this.capJsonObject);
+      const optionalNode1 = this.capOptionalElement(
+        capOptElem,
+        this.capJsonObject
+      );
       if (optionalNode1 !== '') {
         rootNode.ele(optionalNode1);
       }
@@ -82,7 +85,10 @@ export class Capgen {
     const optionalSet2 = ['note', 'references', 'incidents'];
 
     for (const capOptElem of optionalSet1) {
-      const optionalNode1 = this.capOptionalElement(capOptElem,this.capJsonObject);
+      const optionalNode1 = this.capOptionalElement(
+        capOptElem,
+        this.capJsonObject
+      );
       if (optionalNode1 !== '') {
         rootNode.ele(optionalNode1);
       }
@@ -126,7 +132,7 @@ export class Capgen {
           }
 
           // event
-          const eventNode = this.capElement('event',this.capJsonObject);
+          const eventNode = this.capElement('event', this.capJsonObject);
           if (typeof eventNode === 'object') {
             return eventNode;
           } else {
@@ -161,7 +167,7 @@ export class Capgen {
           const infoMandatoryNodesSet1 = ['urgency', 'severity', 'certainty'];
 
           for (const capElem of infoMandatoryNodesSet1) {
-            const idNode = this.capElement(capElem,info);
+            const idNode = this.capElement(capElem, info);
             if (typeof idNode === 'object') {
               return idNode;
             } else {
@@ -176,8 +182,24 @@ export class Capgen {
           // *** Optional /Conditional NODES ****
           //
           const infoOptionalSet1 = [
-            'audience',
-            'eventCode',
+            'audience',            
+          ];
+
+          for (const capOptElem of infoOptionalSet1) {
+            const optionalNode1 = this.capOptionalElement(capOptElem, info);
+            if (optionalNode1 !== '') {
+              AlertInfoNode.ele(optionalNode1);
+            }
+          }
+
+           // event Code multiple event codes are allowed
+           if (info.eventCode && info.eventCode.length !== 0) {
+            for (const evt of info.eventCode) {
+              AlertInfoNode.ele('eventCode').txt(evt);
+            }
+          }
+
+          const infoOptionalSet2 = [            
             'effective',
             'onset',
             'expires',
@@ -189,8 +211,8 @@ export class Capgen {
             'contact',
           ];
 
-          for (const capOptElem of infoOptionalSet1) {
-            const optionalNode1 = this.capOptionalElement(capOptElem,info);
+          for (const capOptElem of infoOptionalSet2) {
+            const optionalNode1 = this.capOptionalElement(capOptElem, info);
             if (optionalNode1 !== '') {
               AlertInfoNode.ele(optionalNode1);
             }
@@ -220,22 +242,16 @@ export class Capgen {
 
           //#region AlertInfoResource Node
           let infoResourceNode;
-          if (
-            info.hasOwnProperty('resource')  &&
-            info['resource']!== null
-          ) {
+          if (info.hasOwnProperty('resource') && info['resource'] !== null) {
             if (Array.isArray(info.resource)) {
               for (const res of info.resource) {
                 infoResourceNode = AlertInfoNode.ele('resource');
-                
-                // *** Mandatory Nodes 
-                const resourceMandatoryNodesSet1 = [
-                  'resourceDesc',
-                  'mimeType',                  
-                ];
-            
+
+                // *** Mandatory Nodes
+                const resourceMandatoryNodesSet1 = ['resourceDesc', 'mimeType'];
+
                 for (const capElem of resourceMandatoryNodesSet1) {
-                  const idNode = this.capElement(capElem,res);
+                  const idNode = this.capElement(capElem, res);
                   if (typeof idNode === 'object') {
                     return idNode;
                   } else {
@@ -246,22 +262,87 @@ export class Capgen {
                     }
                   }
                 }
-                
+
                 // *** Optional Nodes
                 const resourceOptionslNodesSet1 = [
                   'size',
-                  'uri', 
+                  'uri',
                   'derefUri',
-                  'digest'                 
+                  'digest',
                 ];
-            
+
                 for (const capOptElem of resourceOptionslNodesSet1) {
-                  const optionalNode1 = this.capOptionalElement(capOptElem,res);
+                  const optionalNode1 = this.capOptionalElement(
+                    capOptElem,
+                    res
+                  );
                   if (optionalNode1 !== '') {
                     infoResourceNode.ele(optionalNode1);
                   }
                 }
+              }
+            }
+          }
+          //#endregion
 
+          //#region AlertInfoArea Node
+
+          let infoAreaNode;
+          if (info.hasOwnProperty('area') && info['area'] !== null) {
+            if (Array.isArray(info.area)) {
+              for (const areaData of info.area) {
+                infoAreaNode = AlertInfoNode.ele('area');
+
+                // areaDesc
+                const idNode = this.capElement('areaDesc', areaData);
+                if (typeof idNode === 'object') {
+                  return idNode;
+                } else {
+                  if (!idNode.startsWith('<!--')) {
+                    infoAreaNode.ele(idNode);
+                  } else if (this.config.comment) {
+                    infoAreaNode.ele(idNode);
+                  }
+                }
+
+                // polygon
+                if (areaData.polygon && areaData.polygon.length !== 0) {
+                  for (const poly of areaData.polygon) {
+                    infoAreaNode.ele('polygon').txt(poly);
+                  }
+                }
+
+                // circle
+                if (areaData.circle && areaData.circle.length !== 0) {
+                  for (const circ of areaData.circle) {
+                    infoAreaNode.ele('polygon').txt(circ);
+                  }
+                }
+
+                // geocode
+                if (areaData.geocode && areaData.geocode.length !== 0) {
+                  for (const par of areaData.geocode) {
+                    const geocodeNode = infoAreaNode.ele('geocode');
+                    geocodeNode.ele('valueName').txt(par.valueName);
+                    geocodeNode.ele('value').txt(par.value);
+                  }
+                }
+
+                // *** Optional Nodes
+                const areaOptionalNodesSet1 = [
+                  'altitude',
+                  'ceiling',                  
+                ];
+
+                for (const capOptElem of areaOptionalNodesSet1) {
+                  const optionalNode1 = this.capOptionalElement(
+                    capOptElem,
+                    areaData
+                  );
+                  if (optionalNode1 !== '') {
+                    infoAreaNode.ele(optionalNode1);
+                  }
+                }
               }
             }
           }
@@ -274,7 +355,10 @@ export class Capgen {
     return xml.end(this.config.xmlOptions);
   }
 
-  private capElement(capElementName: string,enclosingJSONObject:any): ErrorObject | string {
+  private capElement(
+    capElementName: string,
+    enclosingJSONObject: any
+  ): ErrorObject | string {
     let node;
     let returnNode;
     // when strict mode is true
@@ -296,7 +380,7 @@ export class Capgen {
       // this.capJsonObject.hasOwnProperty(capElementName) &&
       // this.capJsonObject[capElementName] !== null
       enclosingJSONObject.hasOwnProperty(capElementName) ||
-        enclosingJSONObject[capElementName] === null
+      enclosingJSONObject[capElementName] === null
     ) {
       // returnNode.ele(capElementName).txt(this.capJsonObject[capElementName]);
       returnNode.ele(capElementName).txt(enclosingJSONObject[capElementName]);
@@ -309,7 +393,10 @@ export class Capgen {
     return returnNode.first().toString();
   }
 
-  private capOptionalElement(capElementName: string,enclosingJSONObject:any): string {
+  private capOptionalElement(
+    capElementName: string,
+    enclosingJSONObject: any
+  ): string {
     let node;
     let returnNode;
 
