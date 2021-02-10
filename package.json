@@ -1,13 +1,16 @@
 {
   "name": "capgen",
-  "version": "1.0.1",
+  "version": "1.0.5",
   "description": "A package to generate Common Alerting Protocol XML Payload",
-  "main": "./lib/capgen",  
+  "main": "./lib/capgen",
   "scripts": {
     "test": "npm test",
-    "build":"tsc",
-    "prepare" : "npm run build"
+    "build": "tsc",
+    "prepare": "npm run build"
   },
+  "files": [
+    "lib/**/*"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bhagatabhijeet/capgen.git"
