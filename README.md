@@ -2,7 +2,8 @@
 A package to generate Common Alerting Protocol XML Payload
 
 # Code
-- Simply import Capgen from capgen package. 
+- Simply import Capgen from capgen package. NPM URL: https://www.npmjs.com/package/capgen
+``` npm install capgen```
 - create instance of Capgen class by passing the config object to the constructor.
 - generate the cap xml using the 'createUsing' method.
 
