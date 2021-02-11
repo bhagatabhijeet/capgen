@@ -1,6 +1,19 @@
 # capgen
 A package to generate Common Alerting Protocol XML Payload
 
+CAP 1.2 is a popular Common Alerting protocol/specification.
+
+Find the CAP Specification details at [CAP Stanard ](http://docs.oasis-open.org/emergency/cap/v1.2/CAP-v1.2-os.html)
+
+<p align="center">
+
+[![npm version](https://badge.fury.io/js/capgen.svg)](https://badge.fury.io/js/capgen)
+[![GitHub license](https://img.shields.io/github/license/bhagatabhijeet/capgen)](https://github.com/bhagatabhijeet/capgen/blob/main/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/bhagatabhijeet/capgen)](https://github.com/bhagatabhijeet/capgen/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/bhagatabhijeet/capgen)](https://github.com/bhagatabhijeet/capgen/issues)
+[![GitHub forks](https://img.shields.io/github/forks/bhagatabhijeet/capgen)](https://github.com/bhagatabhijeet/capgen/network)
+</p>
+
 # Code
 - Simply import Capgen from capgen package. NPM URL: https://www.npmjs.com/package/capgen
 ``` npm install capgen```
