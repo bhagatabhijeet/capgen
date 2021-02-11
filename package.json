@@ -1,6 +1,6 @@
 {
   "name": "capgen",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "A package to generate Common Alerting Protocol XML Payload",
   "main": "./lib/capgen",
   "scripts": {

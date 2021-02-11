@@ -80,3 +80,5 @@ const xml =gen.createUsing({
 
 console.log(xml);
 ```
+# ChangeLog
+see change log [here](./CHANGELOG.md)
