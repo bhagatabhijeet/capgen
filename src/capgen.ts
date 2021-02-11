@@ -146,7 +146,7 @@ export class Capgen {
           // responseType
           if (info.responseType && info.responseType.length !== 0) {
             for (const resp of info.responseType) {
-              AlertInfoNode.ele('category').txt(resp);
+              AlertInfoNode.ele('responseType').txt(resp);
             }
           } else {
             if (this.config.strictMode) {

@@ -24,6 +24,7 @@ const capXml = gen.createUsing({
     {
       category: ["A","B"],
       event:'Alert Advisory',
+      responseType:['Shelter','Avoid'],
       eventCode:["e1","e2"],
       parameter: [
         {
