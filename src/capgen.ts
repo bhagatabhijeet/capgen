@@ -132,14 +132,14 @@ export class Capgen {
           }
 
           // event
-          const eventNode = this.capElement('event', this.capJsonObject);
+          const eventNode = this.capElement('event', info);
           if (typeof eventNode === 'object') {
             return eventNode;
           } else {
             if (!eventNode.startsWith('<!--')) {
-              rootNode.ele(eventNode);
+              AlertInfoNode.ele(eventNode);
             } else if (this.config.comment) {
-              rootNode.ele(eventNode);
+              AlertInfoNode.ele(eventNode);
             }
           }
 
