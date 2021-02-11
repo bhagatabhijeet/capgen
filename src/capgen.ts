@@ -84,7 +84,7 @@ export class Capgen {
     // note,references,incidents
     const optionalSet2 = ['note', 'references', 'incidents'];
 
-    for (const capOptElem of optionalSet1) {
+    for (const capOptElem of optionalSet2) {
       const optionalNode1 = this.capOptionalElement(
         capOptElem,
         this.capJsonObject
