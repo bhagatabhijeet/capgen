@@ -1,3 +1,6 @@
+# 1.0.7
+  - Resolve the <eventCode>[Object Object]</eventCode> issue
+  
 # 1.0.6
   - Resolved Bug #1 - [on adding event node an error is observed](https://github.com/bhagatabhijeet/capgen/issues/1)
   - Resolved Bug #2 - [source node is added twice need to check the output gen](https://github.com/bhagatabhijeet/capgen/issues/2)
