@@ -26,7 +26,7 @@ export interface AreaNode {
   areaDesc?: any | null;
   polygon?: any[] | null;
   circle?: any[] | null;
-  geocode?: ParameterNode[] ;
+  geocode?: ParameterNode[];
   altitude?: any | null;
   ceiling?: any | null;
 }
@@ -53,7 +53,7 @@ export interface CapAlertInfoNodeObject {
   contact?: any | null;
   parameter?: ParameterNode[];
   resource?: ResourceNode[];
-  area?:AreaNode[];
+  area?: AreaNode[];
 }
 
 export interface CapAlertNodeObject {

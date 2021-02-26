@@ -12,59 +12,99 @@ const configuration: Configuration = {
 
 const gen = new Capgen(configuration);
 const capXml = gen.createUsing({
-  identifier: 123,
-  sender: 'Abhijeet',
-  sent: '123456',
-  status: 'Active',
-  msgType: 'Alert',
-  source: 'FeedJar',
+  identifier: 'Automation-7',
+  sender: 'autocoreteam@blackberry.com',
+  sent: '2021-02-22T05:17:00-07:00',
+  status: 'Actual',
+  msgType: 'Update',
   scope: 'Public',
-  code: ['2.1', '2.2'],
+  code: 'IPAWSv2.0',
+  note: '',
+  references:
+    'w-nws.webmaster@noaa.gov,NWS-IDP-PROD-4780962-3855431,2021-02-11T03:31:00-07:00',
   info: [
     {
-      category: ["A","B"],
-      event:'Alert Advisory',
-      responseType:['Shelter','Avoid'],
-      eventCode:["e1","e2"],
-      parameter: [
+      language: 'en-US',
+      category: ['Met'],
+      event: 'Winter Weather Advisory',
+      responseType: ['Execute'],
+      urgency: 'Expected',
+      severity: 'Moderate',
+      certainty: 'Likely',
+      eventCode: [
         {
-          valueName: 'same',
-          value: 'CEM',
+          valueName: 'SAME',
+          value: 'NWS',
         },
         {
-          valueName: 'ISOK',
-          value: 'OK',
+          valueName: 'NationalWeatherService',
+          value: 'WWY',
         },
       ],
-      resource:[{
-        resourceDesc:"IWS",
-        mimeType:"html"
-      },
-      {
-        resourceDesc:"IWS",
-        mimeType:"image" ,
-        digest:'SHA1'
-      }
-    ],
-    area:[
-      {
-        areaDesc:"Taylor; Clark",
-        geocode:[
+      effective: '2021-02-11T06:03:00-07:00',
+      onset: '2021-02-11T14:00:00-07:00',
+      expires: '2021-02-12T06:15:00-07:00',
+      senderName: 'NWS Missoula MT',
+      headline: 'Test for automation',
+      description: 'some description here',
+      instruction: 'Instruction 1 2 3',
+      web: 'http://www.weather.gov',
+      parameter: [
+        {
+          valueName: 'NWSheadline',
+          value:
+            'WINTER WEATHER ADVISORY REMAINS IN EFFECT FROM 1 PM THIS AFTERNOON TO 10 AM PST FRIDAY',
+        },
+        {
+          valueName: 'HazardType',
+          value: 'Snow',
+        },
+        {
+          valueName: 'VTEC',
+          value: '/O.CON.KMSO.WW.Y.0016.210211T2100Z-210212T1800Z/',
+        },
+        {
+          valueName: 'PIL',
+          value: 'MSOWSWMSO',
+        },
+        {
+          valueName: 'BLOCKCHANNEL',
+          value: 'CMAS',
+        },
+        {
+          valueName: 'BLOCKCHANNEL',
+          value: 'EAS',
+        },
+        {
+          valueName: 'BLOCKCHANNEL',
+          value: 'NWEM',
+        },
+        {
+          valueName: 'eventEndingTime',
+          value: '2021-02-12T11:00:00-07:00',
+        },
+      ],
+      area: [{
+        areaDesc:'Orofino/Grangeville Region; Lower Hells Canyon/Salmon River Region',
+        geocode: [
           {
-            valueName:"UGC",
-            value:"WIZ017"
+            valueName: 'UGC',
+            value: 'IDZ007',
           },
           {
-            valueName:"UGC",
-            value:"WIZ017"
+            valueName: 'UGC',
+            value: 'IDZ008',
           },
           {
-            valueName:"UGC",
-            value:"WIZ017"
-          }
-        ]
-      }
-    ]
+            valueName: 'SAME',
+            value: 16035,
+          },
+          {
+            valueName: 'SAME',
+            value: 16049,
+          },
+        ],
+      }],
     },
   ],
 });

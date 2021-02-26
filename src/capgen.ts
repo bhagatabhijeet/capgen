@@ -195,7 +195,9 @@ export class Capgen {
            // event Code multiple event codes are allowed
            if (info.eventCode && info.eventCode.length !== 0) {
             for (const evt of info.eventCode) {
-              AlertInfoNode.ele('eventCode').txt(evt);
+              const eventCodeNode = AlertInfoNode.ele('eventCode');
+              eventCodeNode.ele('valueName').txt(evt.valueName);
+              eventCodeNode.ele('value').txt(evt.value);              
             }
           }
 
