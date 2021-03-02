@@ -17,7 +17,8 @@ const capXml = gen.createUsing({
   sent: '2021-02-22T05:17:00-07:00',
   status: 'Actual',
   msgType: 'Update',
-  scope: 'Public',
+  scope: 'Prive',
+  restriction:"some restrictions",
   code: 'IPAWSv2.0',
   note: '',
   references:
@@ -86,6 +87,7 @@ const capXml = gen.createUsing({
       ],
       area: [{
         areaDesc:'Orofino/Grangeville Region; Lower Hells Canyon/Salmon River Region',
+        circle:["32.9525,-115.5527 0"],
         geocode: [
           {
             valueName: 'UGC',

@@ -317,7 +317,7 @@ export class Capgen {
                 // circle
                 if (areaData.circle && areaData.circle.length !== 0) {
                   for (const circ of areaData.circle) {
-                    infoAreaNode.ele('polygon').txt(circ);
+                    infoAreaNode.ele('circle').txt(circ);
                   }
                 }
 

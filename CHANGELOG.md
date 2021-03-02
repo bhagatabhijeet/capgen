@@ -1,3 +1,7 @@
+# 1.0.8
+  - Resolved Bug #5 - [Circle node under area node is generated as polygon node](https://github.com/bhagatabhijeet/capgen/issues/5)
+  - Resolved Bug #6 - [Restriction node is missing for alert parent node](https://github.com/bhagatabhijeet/capgen/issues/6)
+  - Resolved Bug #7 - [event code node is not generated according to CAP 1.2](https://github.com/bhagatabhijeet/capgen/issues/7)
 # 1.0.7
   - Resolve the <eventCode>[Object Object]</eventCode> issue
   

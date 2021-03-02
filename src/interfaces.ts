@@ -65,6 +65,7 @@ export interface CapAlertNodeObject {
   msgType?: any | null;
   scope?: any | null;
   source?: any | null;
+  restriction?: any |null;
   addresses?: any | null;
   code?: any | any[] | null;
   note?: any | null;
